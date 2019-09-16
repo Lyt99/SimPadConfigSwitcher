@@ -59,7 +59,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SystemEvent.cs" />
+    <Compile Include="Model\KeyBindingInfo.cs" />
+    <Compile Include="Model\SettingInfo.cs" />
+    <Compile Include="Utility\SystemEvent.cs" />
+    <Compile Include="Utility\Icon.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -100,5 +103,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SimPadController\SimPadController\SimPadController.csproj">
+      <Project>{28cb8035-44a5-4cb3-8d82-c3e1f1ed5bfd}</Project>
+      <Name>SimPadController</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

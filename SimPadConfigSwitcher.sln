@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPadConfigSwitcher", "SimPadConfigSwitcher\SimPadConfigSwitcher.csproj", "{94F42475-5472-4327-8FE7-2078466B7F74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPadController", "..\SimPadController\SimPadController\SimPadController.csproj", "{28CB8035-44A5-4CB3-8D82-C3E1F1ED5BFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{94F42475-5472-4327-8FE7-2078466B7F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94F42475-5472-4327-8FE7-2078466B7F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94F42475-5472-4327-8FE7-2078466B7F74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28CB8035-44A5-4CB3-8D82-C3E1F1ED5BFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28CB8035-44A5-4CB3-8D82-C3E1F1ED5BFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28CB8035-44A5-4CB3-8D82-C3E1F1ED5BFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28CB8035-44A5-4CB3-8D82-C3E1F1ED5BFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

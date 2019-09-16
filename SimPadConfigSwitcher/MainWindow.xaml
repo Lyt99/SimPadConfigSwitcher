@@ -6,15 +6,15 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:SimPadConfigSwitcher"
         mc:Ignorable="d"
-        Title="SimPad设置切换工具" Height="537.355" Width="739.925" ResizeMode="CanMinimize" Background="White">
-    <Grid Margin="0,0,4,0">
+        Title="SimPad设置切换工具" Height="546.348" Width="759.036" ResizeMode="CanMinimize" Background="White">
+    <Grid HorizontalAlignment="Left" Width="749" Margin="0,10,0,-1">
         <Grid.RowDefinitions>
             <RowDefinition Height="249*"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="442"/>
+            <ColumnDefinition Width="468"/>
         </Grid.ColumnDefinitions>
         <ListBox x:Name="ListBoxSetting" HorizontalAlignment="Left" Height="444" Margin="17,13,0,0" VerticalAlignment="Top" Width="255">
 
@@ -34,7 +34,7 @@
                     </Setter>
                 </Style>
             </ListBox.Style>
-            
+
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Template">
@@ -64,19 +64,19 @@
             </ListBox.ItemContainerStyle>
         </ListBox>
         <Grid Grid.Column="1" HorizontalAlignment="Left" Height="31" Margin="12,14,0,0" VerticalAlignment="Top" Width="231">
-            <ComboBox HorizontalAlignment="Left" Height="20" Margin="44,4,0,0" VerticalAlignment="Top" Width="159"/>
+            <ComboBox x:Name="ComboBoxDevices" HorizontalAlignment="Left" Height="20" Margin="44,4,0,0" VerticalAlignment="Top" Width="159"/>
             <Label Content="设备:" HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" Width="52" Margin="0,1,0,-1"/>
         </Grid>
-        <Grid x:Name="GridSetting" Grid.Column="1" HorizontalAlignment="Left" Height="439" Margin="8,45,0,0" VerticalAlignment="Top" Width="420">
-            <GroupBox Header="设置" HorizontalAlignment="Left" Height="429" Margin="0,10,0,0" VerticalAlignment="Top" Width="421">
-                <Grid x:Name="GirdSettingInner" HorizontalAlignment="Left" Height="419" Margin="0,0,-6,-12" VerticalAlignment="Top" Width="415">
+        <Grid x:Name="GridSetting" Grid.Column="1" HorizontalAlignment="Left" Height="439" Margin="8,45,0,0" VerticalAlignment="Top" Width="457">
+            <GroupBox Header="设置" HorizontalAlignment="Left" Height="429" Margin="0,10,0,0" VerticalAlignment="Top" Width="451">
+                <Grid x:Name="GirdSettingInner" HorizontalAlignment="Left" Height="419" Margin="0,0,-12,-12" VerticalAlignment="Top" Width="451">
                     <Label Content="键位1" HorizontalAlignment="Left" Height="23" Margin="5,11,0,0" VerticalAlignment="Top" Width="58"/>
                     <Label Content="键位2" HorizontalAlignment="Left" Height="23" Margin="5,46,0,0" VerticalAlignment="Top" Width="58"/>
                     <Label Content="键位3" HorizontalAlignment="Left" Height="23" Margin="5,81,0,0" VerticalAlignment="Top" Width="58"/>
                     <Label Content="键位4" HorizontalAlignment="Left" Height="23" Margin="5,117,0,0" VerticalAlignment="Top" Width="58"/>
                     <Label Content="键位5" HorizontalAlignment="Left" Height="23" Margin="5,151,0,0" VerticalAlignment="Top" Width="58"/>
                     <Label Content="具体键位位置&#xA;请参考SimPad控制程序" HorizontalAlignment="Left" Margin="5,180,0,0" VerticalAlignment="Top"/>
-                    <GroupBox Header="模式" HorizontalAlignment="Left" Height="220" Margin="182,0,0,0" VerticalAlignment="Top" Width="218">
+                    <GroupBox Header="模式" HorizontalAlignment="Left" Height="220" Margin="231,6,0,0" VerticalAlignment="Top" Width="200">
                         <Grid Margin="10,0,-2,0">
                             <RadioButton Content="按下立即亮起，然后渐隐" Margin="0,11,0,0" Height="25" VerticalAlignment="Top"/>
                             <RadioButton Content="按下立即熄灭，然后渐显" Height="25" Margin="0,36,0,0" VerticalAlignment="Top"/>
@@ -84,19 +84,19 @@
                             <RadioButton Content="按下时亮起" Height="25" Margin="0,86,0,0" VerticalAlignment="Top"/>
                             <RadioButton Content="关闭" Height="25" Margin="0,111,0,0" VerticalAlignment="Top"/>
                             <RadioButton Content="彩虹" Margin="0,136,0,0" VerticalAlignment="Top" Height="25"/>
-                            <xctk:ColorPicker Margin="34,166,121,9" AdvancedButtonHeader="高级" UsingAlphaChannel="False" ShowStandardColors="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" ShowAvailableColors="False" ShowTabHeaders="False" ColorMode="ColorCanvas" DisplayColorTooltip="False" ShowDropDownButton="False" />
+                            <xctk:ColorPicker Margin="34,166,121,9" AdvancedButtonHeader="高级" UsingAlphaChannel="False" ShowStandardColors="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" ShowAvailableColors="False" ShowTabHeaders="False" ColorMode="ColorCanvas" DisplayColorTooltip="False" ShowDropDownButton="False"/>
                             <Label Content="G1" HorizontalAlignment="Left" Height="23" Margin="1,166,0,0" VerticalAlignment="Top" Width="28"/>
                             <xctk:ColorPicker Margin="128,166,27,9" RecentColorsHeader="" AdvancedButtonHeader="高级" UsingAlphaChannel="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" DisplayColorTooltip="False" ShowAvailableColors="False" ShowTabHeaders="False" ShowStandardColors="False" ColorMode="ColorCanvas" ShowDropDownButton="False" />
                             <Label Content="G2" HorizontalAlignment="Left" Height="23" Margin="95,166,0,0" VerticalAlignment="Top" Width="28"/>
                         </Grid>
                     </GroupBox>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="63,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79"/>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="63,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79"/>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="63,81,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79"/>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="63,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79"/>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="63,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="79"/>
-                    <GroupBox Header="其它" HorizontalAlignment="Left" Height="175" Margin="7,226,0,0" VerticalAlignment="Top" Width="393">
-                        <Grid HorizontalAlignment="Left" Height="139" Margin="10,10,0,0" VerticalAlignment="Top" Width="367">
+                    <TextBox x:Name="TBKeyBinding1" HorizontalAlignment="Left" Height="23" Margin="63,11,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding2" HorizontalAlignment="Left" Height="23" Margin="63,46,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding3" HorizontalAlignment="Left" Height="23" Margin="63,81,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding4" HorizontalAlignment="Left" Height="23" Margin="63,117,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding5" HorizontalAlignment="Left" Height="23" Margin="63,151,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <GroupBox Header="其它" HorizontalAlignment="Left" Height="175" Margin="7,226,0,0" VerticalAlignment="Top" Width="424">
+                        <Grid HorizontalAlignment="Left" Height="139" Margin="10,10,0,0" VerticalAlignment="Top" Width="406">
                             <Label Content="消抖延时" HorizontalAlignment="Left" Height="25" Margin="3,6,0,0" VerticalAlignment="Top" Width="57"/>
                             <TextBox HorizontalAlignment="Left" Height="21" Margin="65,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
                         </Grid>
@@ -105,8 +105,8 @@
 
             </GroupBox>
         </Grid>
-        <Button Content="+" HorizontalAlignment="Left" Height="26" Margin="177,457,0,0" VerticalAlignment="Top" Width="48" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <Button Content="-" HorizontalAlignment="Left" Height="26" Margin="225,457,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="1.578,0.618" FontSize="18"/>
+        <Button Content="+" Height="26" Margin="175,457,0,15" VerticalAlignment="Center" Width="48" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" RenderTransformOrigin="0.695,0.452" BorderThickness="1,1,0,1" />
+        <Button Content="-" HorizontalAlignment="Left" Height="26" Margin="223,457,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="1.578,0.618" FontSize="18"/>
         <Grid Grid.Column="1" HorizontalAlignment="Left" Height="41" Margin="228,10,0,0" VerticalAlignment="Top" Width="187">
             <Button Content="关于" HorizontalAlignment="Left" Height="26" Margin="100,6,0,0" VerticalAlignment="Top" Width="75"/>
             <Button Content="高级" HorizontalAlignment="Left" Height="26" Margin="10,6,0,0" VerticalAlignment="Top" Width="75"/>
