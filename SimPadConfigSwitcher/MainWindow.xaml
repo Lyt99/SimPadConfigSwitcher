@@ -16,7 +16,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="468"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="ListBoxSetting" HorizontalAlignment="Left" Height="444" Margin="17,13,0,0" VerticalAlignment="Top" Width="255">
+        <ListBox x:Name="ListBoxSetting" HorizontalAlignment="Left" Height="444" Margin="17,13,0,0" VerticalAlignment="Top" Width="255" SelectionChanged="ListBoxSetting_SelectionChanged">
 
             <ListBox.Style>
                 <Style TargetType="ListBox">
@@ -64,7 +64,7 @@
             </ListBox.ItemContainerStyle>
         </ListBox>
         <Grid Grid.Column="1" HorizontalAlignment="Left" Height="31" Margin="12,14,0,0" VerticalAlignment="Top" Width="231">
-            <ComboBox x:Name="ComboBoxDevices" HorizontalAlignment="Left" Height="20" Margin="44,4,0,0" VerticalAlignment="Top" Width="159"/>
+            <ComboBox x:Name="ComboBoxDevices" HorizontalAlignment="Left" Height="20" Margin="44,4,0,0" VerticalAlignment="Top" Width="159" SelectionChanged="ComboBoxDevices_SelectionChanged"/>
             <Label Content="设备:" HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" Width="52" Margin="0,1,0,-1"/>
         </Grid>
         <Grid x:Name="GridSetting" Grid.Column="1" HorizontalAlignment="Left" Height="439" Margin="8,45,0,0" VerticalAlignment="Top" Width="457">

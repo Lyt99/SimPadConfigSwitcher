@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\DeviceSettingInfo.cs" />
     <Compile Include="Model\KeyBindingInfo.cs" />
     <Compile Include="Model\SettingInfo.cs" />
     <Compile Include="Utility\SystemEvent.cs" />

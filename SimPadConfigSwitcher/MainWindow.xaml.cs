@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using SimPadController;
 using SimPadConfigSwitcher.Utility;
 using SimPadConfigSwitcher.Model;
+using SimPadController.Enum;
 
 namespace SimPadConfigSwitcher
 {
@@ -25,21 +26,46 @@ namespace SimPadConfigSwitcher
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<SettingInfo> SettingList { get; set; }
+
+        public Dictionary<string, SettingInfo> settingDict = new Dictionary<string, SettingInfo>();
+        public DeviceSettingInfo CurrentSetting = null;
+
+        public List<SettingInfo> SettingList => CurrentSetting?.Settings;
+
         public KeyBindingInfo[] KeyBindings = new KeyBindingInfo[5];
 
         public SystemEvent e;
         public SimPadController.SimPadController controller = new SimPadController.SimPadController();
 
+        public class LightsTypeValueConverter : IValueConverter
+        {
+
+            public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            {
+                var s = (LightsType)value;
+                return s == (LightsType)int.Parse(parameter.ToString());
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            {
+                bool isChecked = (bool)value;
+                if (!isChecked)
+                {
+                    return null;
+                }
+                return (LightsType)int.Parse(parameter.ToString());
+            }
+        }
+
         public MainWindow()
         {
-            SettingList = new List<SettingInfo>()
-            {
-                new SettingInfo{
-                    Icon = null,
-                    Name = "测试"
-                }
-            };
+            //SettingList = new List<SettingInfo>()
+            //{
+            //    new SettingInfo{
+            //        Icon = null,
+            //        Name = "测试"
+            //    }
+            //};
 
             InitializeComponent();
 
@@ -81,6 +107,16 @@ namespace SimPadConfigSwitcher
 
             tb.Text = info.ToString();
             e.Handled = true;
+        }
+
+        private void ListBoxSetting_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ComboBoxDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
