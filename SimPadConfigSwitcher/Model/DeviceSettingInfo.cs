@@ -12,9 +12,7 @@ namespace SimPadConfigSwitcher.Model
 {
     public class DeviceSettingInfo
     {
-        public string DeviceName;
-        public List<SettingInfo> Settings;
-        public KeySetting[] keySettings;
+        public KeySetting[] keySetting;
         public LightSpeed LightSpeed;
         public LightsType LightsType;
 
@@ -33,6 +31,22 @@ namespace SimPadConfigSwitcher.Model
         public void ApplyDiffer(SimPad device, DeviceSettingInfo info)
         {
 
+        }
+
+        /// <summary>
+        /// 从设备读取设置
+        /// </summary>
+        /// <param name="device"></param>
+        public void ReadFromDevice(SimPad device)
+        {
+            this.keySetting = new KeySetting[device.KeyCount];
+            for(uint i = 0;i < device.KeyCount; ++i)
+            {
+                keySetting[i] = device.GetKeySetting(i + 1);
+            }
+
+            this.LightSpeed = device.LightSpeed;
+            this.LightsType = device.LightsType;
         }
 
     }

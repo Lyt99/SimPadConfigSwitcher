@@ -11,6 +11,6 @@ namespace SimPadConfigSwitcher.Model
     {
         public ImageSource Icon { get; set; }
         public string Name { get; set; }
-
+        public DeviceSettingInfo setting;
     }
 }
