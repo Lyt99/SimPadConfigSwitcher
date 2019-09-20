@@ -15,6 +15,8 @@ namespace SimPadConfigSwitcher.Model
         public KeySetting[] keySetting;
         public LightSpeed LightSpeed;
         public LightsType LightsType;
+        public Color ColorG1;
+        public Color ColorG2;
 
         /// <summary>
         /// 应用到设备
@@ -25,10 +27,10 @@ namespace SimPadConfigSwitcher.Model
         }
 
         /// <summary>
-        /// 先differ，然后应用到设备
+        /// 先diff，然后应用到设备
         /// </summary>
         /// <param name="info"></param>
-        public void ApplyDiffer(SimPad device, DeviceSettingInfo info)
+        public void ApplyDiff(SimPad device, DeviceSettingInfo info)
         {
 
         }

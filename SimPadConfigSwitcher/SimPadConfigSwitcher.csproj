@@ -62,6 +62,7 @@
     <Compile Include="Model\DeviceSettingInfo.cs" />
     <Compile Include="Model\KeyBindingInfo.cs" />
     <Compile Include="Model\SettingInfo.cs" />
+    <Compile Include="Utility\Converter.cs" />
     <Compile Include="Utility\SystemEvent.cs" />
     <Compile Include="Utility\Icon.cs" />
     <Page Include="MainWindow.xaml">

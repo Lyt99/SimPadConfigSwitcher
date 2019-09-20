@@ -39,25 +39,6 @@ namespace SimPadConfigSwitcher
         public SimPadController.SimPadController controller = new SimPadController.SimPadController();
 
         public SimPad[] Devices;
-        public class LightsTypeValueConverter : IValueConverter
-        {
-
-            public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-            {
-                var s = (LightsType)value;
-                return s == (LightsType)int.Parse(parameter.ToString());
-            }
-
-            public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-            {
-                bool isChecked = (bool)value;
-                if (!isChecked)
-                {
-                    return null;
-                }
-                return (LightsType)int.Parse(parameter.ToString());
-            }
-        }
 
         public MainWindow()
         {

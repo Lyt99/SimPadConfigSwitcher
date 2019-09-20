@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:local="clr-namespace:SimPadConfigSwitcher"
+        xmlns:local="clr-namespace:SimPadConfigSwitcher.Utility"
         mc:Ignorable="d"
         Title="SimPad设置切换工具" Height="546.348" Width="759.036" ResizeMode="CanMinimize" Background="White">
+    <Window.Resources>
+        <local:LightsTypeValueConverter x:Key="LightsTypeValueConverter"></local:LightsTypeValueConverter>
+        <local:ColorValueConverter x:Key="ColorValueConverter"></local:ColorValueConverter>
+    </Window.Resources>
     <Grid HorizontalAlignment="Left" Width="749" Margin="0,10,0,-1">
         <Grid.RowDefinitions>
             <RowDefinition Height="249*"/>
@@ -78,15 +82,15 @@
                     <Label Content="具体键位位置&#xA;请参考SimPad控制程序" HorizontalAlignment="Left" Margin="5,180,0,0" VerticalAlignment="Top"/>
                     <GroupBox Header="模式" HorizontalAlignment="Left" Height="220" Margin="231,6,0,0" VerticalAlignment="Top" Width="200">
                         <Grid Margin="10,0,-2,0">
-                            <RadioButton Content="按下立即亮起，然后渐隐" Margin="0,11,0,0" Height="25" VerticalAlignment="Top"/>
-                            <RadioButton Content="按下立即熄灭，然后渐显" Height="25" Margin="0,36,0,0" VerticalAlignment="Top"/>
-                            <RadioButton Content="一直常亮" Height="25" Margin="0,61,0,0" VerticalAlignment="Top"/>
-                            <RadioButton Content="按下时亮起" Height="25" Margin="0,86,0,0" VerticalAlignment="Top"/>
-                            <RadioButton Content="关闭" Height="25" Margin="0,111,0,0" VerticalAlignment="Top"/>
-                            <RadioButton Content="彩虹" Margin="0,136,0,0" VerticalAlignment="Top" Height="25"/>
-                            <xctk:ColorPicker Margin="34,166,121,9" AdvancedButtonHeader="高级" UsingAlphaChannel="False" ShowStandardColors="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" ShowAvailableColors="False" ShowTabHeaders="False" ColorMode="ColorCanvas" DisplayColorTooltip="False" ShowDropDownButton="False"/>
+                            <RadioButton Content="按下立即亮起，然后渐隐" Margin="0,11,0,0" Height="25" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=0}"/>
+                            <RadioButton Content="按下立即熄灭，然后渐显" Height="25" Margin="0,36,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=1}"/>
+                            <RadioButton Content="一直常亮" Height="25" Margin="0,61,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=2}"/>
+                            <RadioButton Content="按下时亮起" Height="25" Margin="0,86,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=3}"/>
+                            <RadioButton Content="关闭" Height="25" Margin="0,111,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=5}"/>
+                            <RadioButton Content="彩虹" Margin="0,136,0,0" VerticalAlignment="Top" Height="25" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=6}"/>
+                            <xctk:ColorPicker Margin="34,166,121,9" AdvancedButtonHeader="高级" UsingAlphaChannel="False" ShowStandardColors="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" ShowAvailableColors="False" ShowTabHeaders="False" ColorMode="ColorCanvas" DisplayColorTooltip="False" ShowDropDownButton="False" SelectedColor="{Binding CurrentSetting.Setting.ColorG1,Converter={StaticResource ColorValueConverter}}"/>
                             <Label Content="G1" HorizontalAlignment="Left" Height="23" Margin="1,166,0,0" VerticalAlignment="Top" Width="28"/>
-                            <xctk:ColorPicker Margin="128,166,27,9" RecentColorsHeader="" AdvancedButtonHeader="高级" UsingAlphaChannel="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" DisplayColorTooltip="False" ShowAvailableColors="False" ShowTabHeaders="False" ShowStandardColors="False" ColorMode="ColorCanvas" ShowDropDownButton="False" />
+                            <xctk:ColorPicker Margin="128,166,27,9" RecentColorsHeader="" AdvancedButtonHeader="高级" UsingAlphaChannel="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" DisplayColorTooltip="False" ShowAvailableColors="False" ShowTabHeaders="False" ShowStandardColors="False" ColorMode="ColorCanvas" ShowDropDownButton="False" SelectedColor="{Binding CurrentSetting.Setting.ColorG2,Converter={StaticResource ColorValueConverter}}"/>
                             <Label Content="G2" HorizontalAlignment="Left" Height="23" Margin="95,166,0,0" VerticalAlignment="Top" Width="28"/>
                         </Grid>
                     </GroupBox>
@@ -97,8 +101,12 @@
                     <TextBox x:Name="TBKeyBinding5" HorizontalAlignment="Left" Height="23" Margin="63,151,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
                     <GroupBox Header="其它" HorizontalAlignment="Left" Height="175" Margin="7,226,0,0" VerticalAlignment="Top" Width="424">
                         <Grid HorizontalAlignment="Left" Height="139" Margin="10,10,0,0" VerticalAlignment="Top" Width="406">
-                            <Label Content="消抖延时" HorizontalAlignment="Left" Height="25" Margin="3,6,0,0" VerticalAlignment="Top" Width="57"/>
-                            <TextBox HorizontalAlignment="Left" Height="21" Margin="65,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                            <Label Content="消抖延时" HorizontalAlignment="Left" Height="25" Margin="37,7,0,0" VerticalAlignment="Top" Width="57"/>
+                            <TextBox HorizontalAlignment="Left" Height="21" Margin="99,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                            <Label Content="渐隐渐显延迟" HorizontalAlignment="Left" Height="25" Margin="207,7,0,0" VerticalAlignment="Top" Width="82"/>
+                            <TextBox HorizontalAlignment="Left" Height="21" Margin="294,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                            <Label Content="彩虹渐变延迟" HorizontalAlignment="Left" Height="25" Margin="10,33,0,0" VerticalAlignment="Top" Width="84"/>
+                            <TextBox HorizontalAlignment="Left" Height="21" Margin="99,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
