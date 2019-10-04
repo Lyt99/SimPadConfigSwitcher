@@ -12,11 +12,16 @@ namespace SimPadConfigSwitcher.Model
 {
     public class DeviceSettingInfo
     {
-        public KeySetting[] keySetting;
-        public LightSpeed LightSpeed;
-        public LightsType LightsType;
-        public Color ColorG1;
-        public Color ColorG2;
+        public KeySetting[] keySetting { get; set; }
+
+        public LightSpeed LightSpeed { get; set; }
+        public ushort EaseLightDelay { get => LightSpeed.EaseLightDelay; set => LightSpeed.EaseLightDelay = value; }
+        public ushort RainbowLightDelay { get => LightSpeed.RainbowLightDelay; set => LightSpeed.RainbowLightDelay = value; }
+
+        public LightsType LightsType { get; set; }
+        public int DelayInput { get; set; }
+        public Color ColorG1 { get; set; }
+        public Color ColorG2 { get; set; }
 
         /// <summary>
         /// 应用到设备
@@ -49,6 +54,10 @@ namespace SimPadConfigSwitcher.Model
 
             this.LightSpeed = device.LightSpeed;
             this.LightsType = device.LightsType;
+            this.DelayInput = device.DelayInput;
+
+            this.ColorG1 = device.GetLEDColor(1);
+            this.ColorG2 = device.GetLEDColor(2);
         }
 
     }

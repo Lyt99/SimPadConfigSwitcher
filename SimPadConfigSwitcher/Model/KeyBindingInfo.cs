@@ -1,6 +1,7 @@
 ﻿using SimPadController.Enum;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,21 @@ namespace SimPadConfigSwitcher.Model
 {
     public class KeyBindingInfo
     {
+
+        public KeyBindingInfo(SimPadController.Model.KeySetting setting)
+        {
+            this.SimPadKeySetting = setting;
+        }
+
+
         public ModifierKeys Modifiers
         {
             get
             {
+                if (SModifiers == null) return ModifierKeys.None;
+
                 ModifierKeys ret = ModifierKeys.None;
-                foreach(var i in SModifiers)
+                foreach (var i in SModifiers)
                 {
                     ret |= i;
                 }
@@ -26,11 +36,11 @@ namespace SimPadConfigSwitcher.Model
             {
                 List<ModifierKeys> result = new List<ModifierKeys>();
 
-                foreach(ModifierKeys i in Enum.GetValues(typeof(ModifierKeys)))
+                foreach (ModifierKeys i in Enum.GetValues(typeof(ModifierKeys)))
                 {
                     if (i == ModifierKeys.None) continue;
 
-                    if((value & i) == i)
+                    if ((value & i) == i)
                     {
                         result.Add(i);
                     }
@@ -48,22 +58,24 @@ namespace SimPadConfigSwitcher.Model
 
         public override string ToString()
         {
-            if(SModifiers == null && NormalKey == Key.None)
+            if (SModifiers == null && NormalKey == Key.None)
             {
                 List<SimPadKeySpecial> specials = new List<SimPadKeySpecial>();
-                foreach(SimPadKeySpecial i in Enum.GetValues(typeof(SimPadKeySpecial)))
+                foreach (SimPadKeySpecial i in Enum.GetValues(typeof(SimPadKeySpecial)))
                 {
                     if (i == SimPadKeySpecial.None) continue;
 
-                    if((i & this.SimPadKeySetting.Special) == i)
+                    if ((i & this.SimPadKeySetting.Special) == i)
                     {
                         specials.Add(i);
                     }
                 }
 
                 string r = String.Join(" + ", specials);
-                
-                if(this.SimPadKeySetting.Normal != SimPadKeyNormal.None)
+
+                if (r != String.Empty) r += " + ";
+
+                if (this.SimPadKeySetting.Normal != SimPadKeyNormal.None)
                 {
                     r += this.SimPadKeySetting.Normal;
                 }
@@ -73,12 +85,12 @@ namespace SimPadConfigSwitcher.Model
 
             string ret = String.Join(" + ", SModifiers.Select(i => SpecialKeyToSimPadKey(i)));
 
-            if(ret != String.Empty && NormalKey != Key.None)
+            if (ret != String.Empty && NormalKey != Key.None)
             {
                 ret += " + ";
             }
 
-            if(NormalKey != Key.None)
+            if (NormalKey != Key.None)
             {
                 ret += KeyToSimPadKey(NormalKey).ToString();
             }
@@ -90,9 +102,9 @@ namespace SimPadConfigSwitcher.Model
         {
             SimPadKeySpecial special = SimPadKeySpecial.None;
 
-            if (SModifiers != null) return;
+            if (SModifiers == null) return;
 
-            foreach(var i in SModifiers)
+            foreach (var i in SModifiers)
             {
                 special |= SpecialKeyToSimPadKey(i);
             }
@@ -104,11 +116,12 @@ namespace SimPadConfigSwitcher.Model
 
             this.SModifiers = null;
             this.NormalKey = Key.None;
+
         }
 
         private SimPadKeySpecial SpecialKeyToSimPadKey(ModifierKeys k)
         {
-            switch(k)
+            switch (k)
             {
                 case ModifierKeys.Control:
                     return SimPadKeySpecial.LeftCtrl;
@@ -125,27 +138,27 @@ namespace SimPadConfigSwitcher.Model
 
         private SimPadKeyNormal KeyToSimPadKey(Key k)
         {
-            if(k >= Key.A && k <= Key.Z)
+            if (k >= Key.A && k <= Key.Z)
             {
                 return (k - Key.A + SimPadKeyNormal.A);
             }
 
-            if(k >= Key.D1 && k <= Key.D9)
+            if (k >= Key.D1 && k <= Key.D9)
             {
                 return (k - Key.D1 + SimPadKeyNormal.Num1);
             }
 
-            if(k >= Key.NumPad1 && k <= Key.NumPad9)
+            if (k >= Key.NumPad1 && k <= Key.NumPad9)
             {
                 return (k - Key.NumPad1 + SimPadKeyNormal.NumPad1);
             }
 
-            if(k >= Key.F1 && k <= Key.F12)
+            if (k >= Key.F1 && k <= Key.F12)
             {
                 return (k - Key.F1 + SimPadKeyNormal.F1);
             }
 
-            switch(k)
+            switch (k)
             {
                 case Key.NumPad0:
                     return SimPadKeyNormal.NumPad0;

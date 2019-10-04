@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using Xceed.Wpf.Toolkit;
 
@@ -46,7 +47,7 @@ namespace SimPadConfigSwitcher.Utility
                 R = color.R,
                 G = color.G,
                 B = color.B,
-                // A = 0xff
+                A = 0xff
             };
         }
 
@@ -68,4 +69,49 @@ namespace SimPadConfigSwitcher.Utility
         }
     }
 
+
+    public class NullToBoolConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            
+            if(parameter.ToString() == "false")
+            {
+                return value != null;
+            }
+            else
+            {
+                return value == null;
+            }
+            
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return null;
+        }
+    }
+
+    public class NullToHiddenConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (parameter.ToString() == "false")
+            {
+                return value == null ? Visibility.Visible : Visibility.Hidden;
+            }
+            else
+            {
+                return value == null ? Visibility.Hidden : Visibility.Visible;
+            }
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return null;
+        }
+    }
 }

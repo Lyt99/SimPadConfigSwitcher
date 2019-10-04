@@ -10,11 +10,13 @@
     <Window.Resources>
         <local:LightsTypeValueConverter x:Key="LightsTypeValueConverter"></local:LightsTypeValueConverter>
         <local:ColorValueConverter x:Key="ColorValueConverter"></local:ColorValueConverter>
+        <local:NullToBoolConverter x:Key="NullToBoolConverter"></local:NullToBoolConverter>
+        <local:NullToHiddenConverter x:Key="NullToHiddenConverter"></local:NullToHiddenConverter>
     </Window.Resources>
     <Grid HorizontalAlignment="Left" Width="749" Margin="0,10,0,-1">
         <Grid.RowDefinitions>
-            <RowDefinition Height="249*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition/>
+            <RowDefinition Height="0*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -66,13 +68,14 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
+
         </ListBox>
         <Grid Grid.Column="1" HorizontalAlignment="Left" Height="31" Margin="12,14,0,0" VerticalAlignment="Top" Width="231">
             <ComboBox x:Name="ComboBoxDevices" HorizontalAlignment="Left" Height="20" Margin="44,4,0,0" VerticalAlignment="Top" Width="159" SelectionChanged="ComboBoxDevices_SelectionChanged"/>
             <Label Content="设备:" HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" Width="52" Margin="0,1,0,-1"/>
         </Grid>
         <Grid x:Name="GridSetting" Grid.Column="1" HorizontalAlignment="Left" Height="439" Margin="8,45,0,0" VerticalAlignment="Top" Width="457">
-            <GroupBox Header="设置" HorizontalAlignment="Left" Height="429" Margin="0,10,0,0" VerticalAlignment="Top" Width="451">
+            <GroupBox x:Name="GroupBoxSetting" DataContext="{Binding Setting}" Header="设置" HorizontalAlignment="Left" Height="429" Margin="0,10,0,0" VerticalAlignment="Top" Width="451" Visibility="{Binding Converter={StaticResource NullToHiddenConverter},ConverterParameter=true}">
                 <Grid x:Name="GirdSettingInner" HorizontalAlignment="Left" Height="419" Margin="0,0,-12,-12" VerticalAlignment="Top" Width="451">
                     <Label Content="键位1" HorizontalAlignment="Left" Height="23" Margin="5,11,0,0" VerticalAlignment="Top" Width="58"/>
                     <Label Content="键位2" HorizontalAlignment="Left" Height="23" Margin="5,46,0,0" VerticalAlignment="Top" Width="58"/>
@@ -82,42 +85,44 @@
                     <Label Content="具体键位位置&#xA;请参考SimPad控制程序" HorizontalAlignment="Left" Margin="5,180,0,0" VerticalAlignment="Top"/>
                     <GroupBox Header="模式" HorizontalAlignment="Left" Height="220" Margin="231,6,0,0" VerticalAlignment="Top" Width="200">
                         <Grid Margin="10,0,-2,0">
-                            <RadioButton Content="按下立即亮起，然后渐隐" Margin="0,11,0,0" Height="25" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=0}"/>
-                            <RadioButton Content="按下立即熄灭，然后渐显" Height="25" Margin="0,36,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=1}"/>
-                            <RadioButton Content="一直常亮" Height="25" Margin="0,61,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=2}"/>
-                            <RadioButton Content="按下时亮起" Height="25" Margin="0,86,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=3}"/>
-                            <RadioButton Content="关闭" Height="25" Margin="0,111,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=5}"/>
-                            <RadioButton Content="彩虹" Margin="0,136,0,0" VerticalAlignment="Top" Height="25" IsChecked="{Binding CurrentSetting.Setting.LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=6}"/>
-                            <xctk:ColorPicker Margin="34,166,121,9" AdvancedButtonHeader="高级" UsingAlphaChannel="False" ShowStandardColors="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" ShowAvailableColors="False" ShowTabHeaders="False" ColorMode="ColorCanvas" DisplayColorTooltip="False" ShowDropDownButton="False" SelectedColor="{Binding CurrentSetting.Setting.ColorG1,Converter={StaticResource ColorValueConverter}}"/>
+                            <RadioButton Content="按下立即亮起，然后渐隐" Margin="0,11,0,0" Height="25" VerticalAlignment="Top" IsChecked="{Binding LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=0}"/>
+                            <RadioButton Content="按下立即熄灭，然后渐显" Height="25" Margin="0,36,0,0" VerticalAlignment="Top" IsChecked="{Binding LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=1}"/>
+                            <RadioButton Content="一直常亮" Height="25" Margin="0,61,0,0" VerticalAlignment="Top" IsChecked="{Binding LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=2}"/>
+                            <RadioButton Content="按下时亮起" Height="25" Margin="0,86,0,0" VerticalAlignment="Top" IsChecked="{Binding LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=3}"/>
+                            <RadioButton Content="关闭" Height="25" Margin="0,111,0,0" VerticalAlignment="Top" IsChecked="{Binding LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=5}"/>
+                            <RadioButton Content="彩虹" Margin="0,136,0,0" VerticalAlignment="Top" Height="25" IsChecked="{Binding LightsType,Mode=TwoWay,Converter={StaticResource LightsTypeValueConverter},ConverterParameter=6}"/>
+                            <xctk:ColorPicker Margin="34,166,121,9" AdvancedButtonHeader="高级" UsingAlphaChannel="False" ShowStandardColors="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" ShowAvailableColors="False" ShowTabHeaders="False" ColorMode="ColorCanvas" DisplayColorTooltip="False" ShowDropDownButton="False" SelectedColor="{Binding ColorG1,Converter={StaticResource ColorValueConverter}}"/>
                             <Label Content="G1" HorizontalAlignment="Left" Height="23" Margin="1,166,0,0" VerticalAlignment="Top" Width="28"/>
-                            <xctk:ColorPicker Margin="128,166,27,9" RecentColorsHeader="" AdvancedButtonHeader="高级" UsingAlphaChannel="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" DisplayColorTooltip="False" ShowAvailableColors="False" ShowTabHeaders="False" ShowStandardColors="False" ColorMode="ColorCanvas" ShowDropDownButton="False" SelectedColor="{Binding CurrentSetting.Setting.ColorG2,Converter={StaticResource ColorValueConverter}}"/>
+                            <xctk:ColorPicker Margin="128,166,27,9" RecentColorsHeader="" AdvancedButtonHeader="高级" UsingAlphaChannel="False" StandardButtonHeader="标准" StandardColorsHeader="标准颜色" AvailableColorsHeader="可用颜色" DisplayColorTooltip="False" ShowAvailableColors="False" ShowTabHeaders="False" ShowStandardColors="False" ColorMode="ColorCanvas" ShowDropDownButton="False" SelectedColor="{Binding ColorG2,Converter={StaticResource ColorValueConverter}}"/>
                             <Label Content="G2" HorizontalAlignment="Left" Height="23" Margin="95,166,0,0" VerticalAlignment="Top" Width="28"/>
                         </Grid>
                     </GroupBox>
-                    <TextBox x:Name="TBKeyBinding1" HorizontalAlignment="Left" Height="23" Margin="63,11,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
-                    <TextBox x:Name="TBKeyBinding2" HorizontalAlignment="Left" Height="23" Margin="63,46,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
-                    <TextBox x:Name="TBKeyBinding3" HorizontalAlignment="Left" Height="23" Margin="63,81,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
-                    <TextBox x:Name="TBKeyBinding4" HorizontalAlignment="Left" Height="23" Margin="63,117,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
-                    <TextBox x:Name="TBKeyBinding5" HorizontalAlignment="Left" Height="23" Margin="63,151,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding1" Text="{Binding Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="63,11,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding2" Text="{Binding Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="63,46,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding3" Text="{Binding Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="63,81,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding4" Text="{Binding Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="63,117,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                    <TextBox x:Name="TBKeyBinding5" Text="{Binding Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="63,151,0,0" VerticalAlignment="Top" Width="150" ContextMenu="{x:Null}" KeyUp="TBKeyBinding_KeyUp" PreviewKeyDown="TBKeyBinding_PreviewKeyDown" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
                     <GroupBox Header="其它" HorizontalAlignment="Left" Height="175" Margin="7,226,0,0" VerticalAlignment="Top" Width="424">
                         <Grid HorizontalAlignment="Left" Height="139" Margin="10,10,0,0" VerticalAlignment="Top" Width="406">
                             <Label Content="消抖延时" HorizontalAlignment="Left" Height="25" Margin="37,7,0,0" VerticalAlignment="Top" Width="57"/>
-                            <TextBox HorizontalAlignment="Left" Height="21" Margin="99,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                            <TextBox HorizontalAlignment="Left" Height="21" Margin="99,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" Text="{Binding DelayInput,Mode=TwoWay}"/>
                             <Label Content="渐隐渐显延迟" HorizontalAlignment="Left" Height="25" Margin="207,7,0,0" VerticalAlignment="Top" Width="82"/>
-                            <TextBox HorizontalAlignment="Left" Height="21" Margin="294,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                            <TextBox HorizontalAlignment="Left" Height="21" Margin="294,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" Text="{Binding EaseLightDelay,Mode=TwoWay}"/>
                             <Label Content="彩虹渐变延迟" HorizontalAlignment="Left" Height="25" Margin="10,33,0,0" VerticalAlignment="Top" Width="84"/>
-                            <TextBox HorizontalAlignment="Left" Height="21" Margin="99,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False"/>
+                            <TextBox HorizontalAlignment="Left" Height="21" Margin="99,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" Text="{Binding RainbowLightDelay,Mode=TwoWay}"/>
                         </Grid>
                     </GroupBox>
                 </Grid>
 
             </GroupBox>
+            <TextBlock x:Name="TextNoConfigSelection" HorizontalAlignment="Left" Height="18" Margin="136,211,0,0" TextWrapping="Wrap" Text="请先选择或添加一个配置" VerticalAlignment="Top" Width="175" TextAlignment="Center" Visibility="{Binding Converter={StaticResource NullToHiddenConverter},ConverterParameter=false}"/>
         </Grid>
-        <Button Content="+" Height="26" Margin="175,457,0,15" VerticalAlignment="Center" Width="48" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" RenderTransformOrigin="0.695,0.452" BorderThickness="1,1,0,1" />
-        <Button Content="-" HorizontalAlignment="Left" Height="26" Margin="223,457,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="1.578,0.618" FontSize="18"/>
+        <Button x:Name="ButtonAdd" Content="+" HorizontalAlignment="Left" Height="26" Margin="175,457,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="1.578,0.618" FontSize="18" BorderThickness="1,0,0,1" IsEnabled="{Binding Mode=OneWay,Converter={StaticResource NullToBoolConverter},ConverterParameter=false}" Click="ButtonAdd_Click"/>
+        <Button x:Name="ButtonDelete" Content="-" HorizontalAlignment="Left" Height="26" Margin="223,457,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="1.578,0.618" FontSize="18" BorderThickness="1,0,1,1" IsEnabled="{Binding Mode=OneWay,Converter={StaticResource NullToBoolConverter},ConverterParameter=false}"/>
         <Grid Grid.Column="1" HorizontalAlignment="Left" Height="41" Margin="228,10,0,0" VerticalAlignment="Top" Width="187">
             <Button Content="关于" HorizontalAlignment="Left" Height="26" Margin="100,6,0,0" VerticalAlignment="Top" Width="75"/>
             <Button Content="高级" HorizontalAlignment="Left" Height="26" Margin="10,6,0,0" VerticalAlignment="Top" Width="75"/>
         </Grid>
+        <TextBlock x:Name="TBoxNoSelection" HorizontalAlignment="Left" Height="19" Margin="17,230,0,0" TextWrapping="Wrap" Text="请先选择一个设备" VerticalAlignment="Top" Width="254" TextAlignment="Center" RenderTransformOrigin="0.75,1.579" Visibility="{Binding Mode=OneWay,Converter={StaticResource NullToHiddenConverter},ConverterParameter=false}"/>
     </Grid>
 </Window>
