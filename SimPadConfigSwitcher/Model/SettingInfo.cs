@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using SimPadConfigSwitcher.Utility;
+using Newtonsoft.Json;
 
 namespace SimPadConfigSwitcher.Model
 {
@@ -12,6 +13,7 @@ namespace SimPadConfigSwitcher.Model
     { 
         private ImageSource icon;
 
+        [JsonIgnore]
         public ImageSource Icon
         {
             get
@@ -25,7 +27,7 @@ namespace SimPadConfigSwitcher.Model
             }
         }
 
-        public bool IsDefault;
+        public bool IsDefault { get; set; }
         public string Name { get; set; }
         public string TargetFilePath { get; set; }
         public DeviceSettingInfo Setting { get; set; }

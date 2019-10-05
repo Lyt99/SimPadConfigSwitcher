@@ -3,7 +3,11 @@
  * Using The Code Project Open License (CPOL) License
  */
 
-namespace SimPadConfigSwitcher
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+
+namespace SimPadConfigSwitcher.Utility
 {
     public enum SystemEvents : uint
     {
@@ -18,45 +22,88 @@ namespace SimPadConfigSwitcher
     public class SystemEvent
     {
         private const uint WINEVENT_OUTOFCONTEXT = 0;
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern System.IntPtr SetWinEventHook(uint eventMin, uint eventMax, System.IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+        
+        // Win APi
+        [DllImport("user32.dll")]
+        private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+        [DllImport("user32.dll")]
+        private static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+        public const int PROCESS_ALL_ACCESS = 0x000F0000 | 0x00100000 | 0xFFF;
+        [DllImport("User32.dll")]
+        public extern static int GetWindowThreadProcessId(IntPtr hWnd, ref int lpdwProcessId);
+        [DllImport("Kernel32.dll")]
+        public extern static IntPtr OpenProcess(int fdwAccess, int fInherit, int IDProcess);
+        [DllImport("Kernel32.dll")]
+        public extern static bool CloseHandle(IntPtr hObject);
+        [DllImport("psapi.dll")]
+        static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpBaseName, [In] [MarshalAs(UnmanagedType.U4)] int nSize);
 
-        private delegate void WinEventDelegate(System.IntPtr hWinEventHook, uint eventType, System.IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+        private IntPtr hWinEventHook;
+        private SystemEvents eventType;
+
+        private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
         public event SystemEventEventHandler SystemEventHandler;
-        public delegate void SystemEventEventHandler(System.IntPtr hWinEventHook, uint eventType, System.IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+
+        public delegate void SystemEventEventHandler(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+
         private uint m_event = 0;
         private WinEventDelegate m_delegate = null;
 
-        private System.IntPtr m_foregroundHwnd = System.IntPtr.Zero;
         public SystemEvent(SystemEvents SystemEvent)
         {
-            m_event = System.Convert.ToUInt32(SystemEvent);
-            m_delegate = new WinEventDelegate(WinEventProc);
-            try
-            {
-                SetWinEventHook(m_event, m_event, System.IntPtr.Zero, m_delegate, System.Convert.ToUInt32(0), System.Convert.ToUInt32(0), WINEVENT_OUTOFCONTEXT);
-            }
-            catch (System.Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-            }
+            eventType = SystemEvent;
         }
 
-        public void WinEventProc(System.IntPtr hWinEventHook, uint eventType, System.IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        public void Start()
+        {
+            m_event = Convert.ToUInt32(eventType);
+            m_delegate = new WinEventDelegate(WinEventProc);
+
+            hWinEventHook = SetWinEventHook(m_event, m_event, IntPtr.Zero, m_delegate, Convert.ToUInt32(0), Convert.ToUInt32(0), WINEVENT_OUTOFCONTEXT);
+        }
+
+        public void Stop()
+        {
+            if(hWinEventHook != IntPtr.Zero)
+            {
+                UnhookWinEvent(hWinEventHook);
+            }
+
+            hWinEventHook = IntPtr.Zero;
+            this.Hwnd = IntPtr.Zero;
+        }
+
+        public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
             if ((((SystemEventHandler != null)) && (SystemEventHandler.GetInvocationList().Length > 0)))
             {
-                m_foregroundHwnd = hwnd;
-                if (SystemEventHandler != null)
-                {
-                    SystemEventHandler(hWinEventHook, eventType, hwnd, idObject, idChild, dwEventThread, dwmsEventTime);
-                }
+                Hwnd = hwnd;
+                SystemEventHandler?.Invoke(hWinEventHook, eventType, hwnd, idObject, idChild, dwEventThread, dwmsEventTime);
             }
         }
 
-        public System.IntPtr Hwnd
+        public string GetApplicationPath()
         {
-            get { return m_foregroundHwnd; }
+            if (this.Hwnd == IntPtr.Zero) return string.Empty;
+
+            int pId = 0;
+
+            GetWindowThreadProcessId(this.Hwnd, ref pId);
+            IntPtr pHandle = OpenProcess(1040, 0, pId);
+
+            StringBuilder sb = new StringBuilder(512);
+            GetModuleFileNameEx(pHandle, IntPtr.Zero, sb, 512);
+
+            CloseHandle(pHandle);
+
+            return sb.ToString();
+        }
+
+        public IntPtr Hwnd { get; private set; } = IntPtr.Zero;
+
+        ~SystemEvent()
+        {
+            this.Stop();
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:SimPadConfigSwitcher.Utility"
         mc:Ignorable="d"
-        Title="SimPad设置切换工具" Height="546.348" Width="759.036" ResizeMode="CanMinimize" Background="White">
+        Title="SimPad设置切换工具" Height="546.348" Width="759.036" ResizeMode="CanMinimize" Background="White" LostFocus="Window_LostFocus" Closing="Window_Closing">
     <Window.Resources>
         <local:LightsTypeValueConverter x:Key="LightsTypeValueConverter"></local:LightsTypeValueConverter>
         <local:ColorValueConverter x:Key="ColorValueConverter"></local:ColorValueConverter>
@@ -107,9 +107,9 @@
                             <Label Content="消抖延时" HorizontalAlignment="Left" Height="25" Margin="37,7,0,0" VerticalAlignment="Top" Width="57"/>
                             <TextBox HorizontalAlignment="Left" Height="21" Margin="99,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" Text="{Binding DelayInput,Mode=TwoWay}"/>
                             <Label Content="渐隐渐显延迟" HorizontalAlignment="Left" Height="25" Margin="207,7,0,0" VerticalAlignment="Top" Width="82"/>
-                            <TextBox HorizontalAlignment="Left" Height="21" Margin="294,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" Text="{Binding EaseLightDelay,Mode=TwoWay}"/>
+                            <TextBox HorizontalAlignment="Left" Height="21" Margin="294,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" Text="{Binding LightSpeed.EaseLightDelay,Mode=TwoWay}"/>
                             <Label Content="彩虹渐变延迟" HorizontalAlignment="Left" Height="25" Margin="10,33,0,0" VerticalAlignment="Top" Width="84"/>
-                            <TextBox HorizontalAlignment="Left" Height="21" Margin="99,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" Text="{Binding RainbowLightDelay,Mode=TwoWay}"/>
+                            <TextBox HorizontalAlignment="Left" Height="21" Margin="99,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" VerticalContentAlignment="Center" InputMethod.IsInputMethodEnabled="False" Text="{Binding LightSpeed.RainbowLightDelay,Mode=TwoWay}"/>
                         </Grid>
                     </GroupBox>
                 </Grid>

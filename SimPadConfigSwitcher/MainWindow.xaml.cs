@@ -20,6 +20,8 @@ using SimPadController.Device;
 using SimPadController.Enum;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.Threading;
+using SimPadConfigSwitcher.Helper;
 
 namespace SimPadConfigSwitcher
 {
@@ -30,39 +32,34 @@ namespace SimPadConfigSwitcher
     public partial class MainWindow : Window
     {
 
-        private Dictionary<string, ObservableCollection<SettingInfo>> settingDict = new Dictionary<string, ObservableCollection<SettingInfo>>();
-
         private ObservableCollection<SettingInfo> settingList = null;
         private SettingInfo currentSetting = null;
         private SimPad currentDevice = null;
 
         private KeyBindingInfo[] keyBindings = new KeyBindingInfo[5];
 
-        private SystemEvent e;
         private SimPadController.SimPadController controller = new SimPadController.SimPadController();
 
-        private SimPad[] devices;
+        private OpenFileDialog openFileDialog = new OpenFileDialog()
+        {
+            Title =  "选择可执行文件",
+            Filter = "可执行文件|*.exe",
+            FileName = String.Empty,
+            FilterIndex = 1,
+            DefaultExt = "exe"
+        };
 
-        private OpenFileDialog openFileDialog;
+        private System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
 
         public MainWindow()
         {
-            //settingList = new ObservableCollection<SettingInfo>()
-            //{
-            //    new SettingInfo{
-            //        TargetFilePath = @"E:\osu!\osu!.exe",
-            //        Name = "测试"
-            //    },
-            //    new SettingInfo{
-            //        TargetFilePath = @"E:\osu!\osu!.exe",
-            //        Name = "测试1"
-            //    }
-            //};
-
             InitializeComponent();
 
+            // 加载配置
+            this.LoadConfig();
+
             // 初始化数据
-            devices = controller.GetDevices().ToArray();
+            Globals.Devices = controller.GetDevices().ToArray();
 
 
             // 初始化绑定
@@ -75,21 +72,21 @@ namespace SimPadConfigSwitcher
             this.TBoxNoSelection.DataContext = settingList;
             this.ButtonAdd.DataContext = settingList;
             this.ButtonDelete.DataContext = settingList;
-            this.ComboBoxDevices.ItemsSource = devices.Select(i => i.DisplayName).Distinct();
+            this.ComboBoxDevices.ItemsSource = Globals.Devices.Select(i => i.DisplayName).Distinct();
 
-            this.openFileDialog = new OpenFileDialog();
-            this.openFileDialog.Title = "选择可执行文件";
-            this.openFileDialog.Filter = "可执行文件|*.exe";
-            this.openFileDialog.FileName = String.Empty;
-            this.openFileDialog.FilterIndex = 1;
-            this.openFileDialog.DefaultExt = "exe";
+            //设置托盘的各个属性
+            notifyIcon.BalloonTipText = "程序开始运行";
+            notifyIcon.Text = "托盘图标";
+            //notifyIcon.Icon = new System.Drawing.Icon(System.Windows.Forms.Application.StartupPath + \"\\\\wp.ico\");
+            notifyIcon.Visible = true;
+            notifyIcon.ShowBalloonTip(2000);
         }
 
         private void deviceChanged(object sender, SimPadDeviceChangedEventArgs e)
         {
             // 更新数据
-            devices = controller.GetDevices().ToArray();
-            ComboBoxDevices.Dispatcher.Invoke(() => ComboBoxDevices.ItemsSource = devices.Select(i => i.DisplayName).Distinct());
+            Globals.Devices = controller.GetDevices().ToArray();
+            ComboBoxDevices.Dispatcher.Invoke(() => ComboBoxDevices.ItemsSource = Globals.Devices.Select(i => i.DisplayName).Distinct());
              //this.ComboBoxDevices.Dispatcher.Invoke(() => {
              //    this.ComboBoxDevices.SelectedIndex = 0;
              //}); // 选择最新加入的那个
@@ -128,7 +125,7 @@ namespace SimPadConfigSwitcher
             currentSetting = (SettingInfo)((ListBox)sender).SelectedItem;
 
 
-            var b = currentSetting.Setting.keySetting;
+            var b = currentSetting.Setting.KeySetting;
 
             this.TBKeyBinding1.DataContext = keyBindings[0] = new KeyBindingInfo(b[0]);
             this.TBKeyBinding2.DataContext = keyBindings[1] = new KeyBindingInfo(b[1]);
@@ -146,10 +143,10 @@ namespace SimPadConfigSwitcher
             if (current == null) return;
 
             ObservableCollection<SettingInfo> settingInfo;
-            if(!settingDict.TryGetValue(current, out settingInfo))
+            if(!Globals.SettingDict.TryGetValue(current, out settingInfo))
             {
                 settingInfo = new ObservableCollection<SettingInfo>();
-                settingDict[current] = settingInfo;
+                Globals.SettingDict[current] = settingInfo;
             }
 
             settingList = settingInfo;
@@ -159,7 +156,7 @@ namespace SimPadConfigSwitcher
             this.TBoxNoSelection.DataContext = settingList;
             this.ButtonAdd.DataContext = settingList;
             this.ButtonDelete.DataContext = settingList;
-            this.currentDevice = this.devices[((ComboBox)sender).SelectedIndex];
+            this.currentDevice = Globals.Devices[((ComboBox)sender).SelectedIndex];
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
@@ -185,6 +182,30 @@ namespace SimPadConfigSwitcher
 
                 settingList.Add(si);
             }
+
+            this.SaveConfig();
+            
+        }
+
+        private void SaveConfig()
+        {
+            PersistenceHelper.Save();
+        }
+
+
+        private void LoadConfig()
+        {
+            PersistenceHelper.Load();
+        }
+
+        private void Window_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.SaveConfig();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.SaveConfig();
         }
     }
 }

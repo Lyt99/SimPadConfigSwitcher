@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SimPadController.Device;
-using SimPadController.Model;
+﻿using SimPadController.Device;
 using SimPadController.Enum;
-
+using SimPadController.Model;
 
 namespace SimPadConfigSwitcher.Model
 {
     public class DeviceSettingInfo
     {
-        public KeySetting[] keySetting { get; set; }
+        public KeySetting[] KeySetting { get; set; }
 
         public LightSpeed LightSpeed { get; set; }
-        public ushort EaseLightDelay { get => LightSpeed.EaseLightDelay; set => LightSpeed.EaseLightDelay = value; }
-        public ushort RainbowLightDelay { get => LightSpeed.RainbowLightDelay; set => LightSpeed.RainbowLightDelay = value; }
+        //public ushort EaseLightDelay { get => LightSpeed.EaseLightDelay; set => LightSpeed.EaseLightDelay = value; }
+        //public ushort RainbowLightDelay { get => LightSpeed.RainbowLightDelay; set => LightSpeed.RainbowLightDelay = value; }
 
         public LightsType LightsType { get; set; }
         public int DelayInput { get; set; }
@@ -28,16 +22,19 @@ namespace SimPadConfigSwitcher.Model
         /// </summary>
         public void Apply(SimPad device)
         {
+            for(uint i = 0; i < device.KeyCount; ++i)
+            {
+                device.SetKeySetting(i + 1, KeySetting[i]);
+            }
 
-        }
+            device.LightSpeed = this.LightSpeed;
+            device.LightsType = this.LightsType;
+            device.DelayInput = this.DelayInput;
 
-        /// <summary>
-        /// 先diff，然后应用到设备
-        /// </summary>
-        /// <param name="info"></param>
-        public void ApplyDiff(SimPad device, DeviceSettingInfo info)
-        {
+            device.SetLEDColor(1, this.ColorG1);
+            device.SetLEDColor(2, this.ColorG2);
 
+            device.ApplyAllSettings(); // 驱动那边做了diff了，所以这边不用管了
         }
 
         /// <summary>
@@ -46,10 +43,10 @@ namespace SimPadConfigSwitcher.Model
         /// <param name="device"></param>
         public void ReadFromDevice(SimPad device)
         {
-            this.keySetting = new KeySetting[device.KeyCount];
-            for(uint i = 0;i < device.KeyCount; ++i)
+            this.KeySetting = new KeySetting[device.KeyCount];
+            for(uint i = 0; i < device.KeyCount; ++i)
             {
-                keySetting[i] = device.GetKeySetting(i + 1);
+                KeySetting[i] = device.GetKeySetting(i + 1);
             }
 
             this.LightSpeed = device.LightSpeed;
