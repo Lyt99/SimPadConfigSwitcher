@@ -36,7 +36,7 @@ namespace SimPadConfigSwitcher
         private SettingInfo currentSetting = null;
         private SimPad currentDevice = null;
 
-        private KeyBindingInfo[] keyBindings = new KeyBindingInfo[5];
+        private TextBox[] keyBindingTextboxes;
 
         private SimPadController.SimPadController controller = new SimPadController.SimPadController();
 
@@ -51,9 +51,20 @@ namespace SimPadConfigSwitcher
 
         private System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
 
+        private ConfigSwitcher configSwitcher = new ConfigSwitcher();
+
         public MainWindow()
         {
             InitializeComponent();
+            // 文本框
+            keyBindingTextboxes = new TextBox[]
+            {
+                this.TBKeyBinding1,
+                this.TBKeyBinding2,
+                this.TBKeyBinding3,
+                this.TBKeyBinding4,
+                this.TBKeyBinding5
+            };
 
             // 加载配置
             this.LoadConfig();
@@ -75,11 +86,61 @@ namespace SimPadConfigSwitcher
             this.ComboBoxDevices.ItemsSource = Globals.Devices.Select(i => i.DisplayName).Distinct();
 
             //设置托盘的各个属性
-            notifyIcon.BalloonTipText = "程序开始运行";
-            notifyIcon.Text = "托盘图标";
-            //notifyIcon.Icon = new System.Drawing.Icon(System.Windows.Forms.Application.StartupPath + \"\\\\wp.ico\");
+            notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+
+            notifyIcon.Text = "SimPad配置切换工具";
+            notifyIcon.Icon = new Icon("Resources\\icon.ico");
             notifyIcon.Visible = true;
-            notifyIcon.ShowBalloonTip(2000);
+
+            var menu = new System.Windows.Forms.ContextMenuStrip();
+
+            var mi = new System.Windows.Forms.ToolStripMenuItem();
+            mi.Text = "开启/关闭功能";
+            mi.Click += SwitchSwither;
+            menu.Items.Add(mi);
+
+            mi = new System.Windows.Forms.ToolStripMenuItem();
+            mi.Text = "退出";
+            mi.Click += ClickExit;
+            menu.Items.Add(mi);
+
+            notifyIcon.ContextMenuStrip = menu;
+
+            Globals.ShowBallonTip = this.ShowBallonTip;
+
+            this.configSwitcher.Start();
+            this.ShowBallonTip("SimPad设置切换工具功能已启动");
+        }
+
+        private void ClickExit(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void SwitchSwither(object sender, EventArgs e)
+        {
+            if(this.configSwitcher.IsEnabled)
+            {
+                this.configSwitcher.Stop();
+                this.ShowBallonTip("功能已关闭");
+            } else
+            {
+                this.configSwitcher.Start();
+                this.ShowBallonTip("功能已启动");
+            }
+        }
+
+        public void ShowBallonTip(string text, int delay = 200)
+        {
+            notifyIcon.BalloonTipText = text;
+            notifyIcon.ShowBalloonTip(delay);
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = WindowState.Normal;
+            this.Activate();
         }
 
         private void deviceChanged(object sender, SimPadDeviceChangedEventArgs e)
@@ -124,14 +185,22 @@ namespace SimPadConfigSwitcher
         {
             currentSetting = (SettingInfo)((ListBox)sender).SelectedItem;
 
+            if (currentSetting == null) return;
 
             var b = currentSetting.Setting.KeySetting;
 
-            this.TBKeyBinding1.DataContext = keyBindings[0] = new KeyBindingInfo(b[0]);
-            this.TBKeyBinding2.DataContext = keyBindings[1] = new KeyBindingInfo(b[1]);
-            this.TBKeyBinding3.DataContext = keyBindings[2] = new KeyBindingInfo(b[2]);
-            this.TBKeyBinding4.DataContext = keyBindings[3] = new KeyBindingInfo(b[3]);
-            this.TBKeyBinding5.DataContext = keyBindings[4] = new KeyBindingInfo(b[4]);
+            int i = 0;
+            for(; i < this.keyBindingTextboxes.Length && i < b.Length; ++i)
+            {
+                var inf = new KeyBindingInfo(b[i]);
+                this.keyBindingTextboxes[i].DataContext = inf;
+                this.keyBindingTextboxes[i].Text = inf.ToString();
+            }
+
+            for(; i < this.keyBindingTextboxes.Length; ++i)
+            {
+                this.keyBindingTextboxes[i].IsEnabled = false;
+            }
 
 
             this.GridSetting.DataContext = currentSetting;
@@ -205,7 +274,37 @@ namespace SimPadConfigSwitcher
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            this.notifyIcon.Dispose();
             this.SaveConfig();
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if(this.WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var a = new AboutWindow();
+            a.Owner = this;
+            a.Show();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("未完成!");
+        }
+
+        private void ButtonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            int index = ListBoxSetting.SelectedIndex;
+
+            if (index == -1) return;
+
+            this.settingList.RemoveAt(index);
         }
     }
 }

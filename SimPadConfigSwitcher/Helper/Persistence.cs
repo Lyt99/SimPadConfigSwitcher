@@ -35,7 +35,7 @@ namespace SimPadConfigSwitcher.Helper
             if(!File.Exists(PersistenceHelper.Path))
             {
                 StreamWriter sw = new StreamWriter(PersistenceHelper.Path);
-                sw.Write("[]");
+                sw.Write("{}");
                 sw.Close();
                 Globals.SettingDict = new Dictionary<string, ObservableCollection<SettingInfo>>();
                 return;

@@ -11,6 +11,9 @@ namespace SimPadConfigSwitcher
 {
     class Globals
     {
+        public delegate void ShowBallonTipDelegate(string text, int delay = 2000);
+
+        public static ShowBallonTipDelegate ShowBallonTip;
         public static Dictionary<string, ObservableCollection<SettingInfo>> SettingDict;
         public static SimPad[] Devices;
     }

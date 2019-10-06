@@ -1,0 +1,16 @@
+﻿<Window x:Class="SimPadConfigSwitcher.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimPadConfigSwitcher"
+        mc:Ignorable="d"
+        Title="关于" Height="165.677" Width="271.971" ResizeMode="NoResize">
+    <Grid Margin="0,0,2,1">
+        <TextBlock HorizontalAlignment="Left" Height="92" TextWrapping="Wrap" VerticalAlignment="Top" Width="244" TextAlignment="Center" Margin="10,10,0,0"><Run Text="SimPad 设置切换工具"/><LineBreak/><Run Text="SimPad Cofig Switcher"/><LineBreak/><Run Text="by "/><Run Text="L"/><Run Text="yt99"/><LineBreak/><Run/><LineBreak/><Run Text="感谢手柄出品的如此精美的触盘！"/><LineBreak/><Run/><LineBreak/><Run/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="21" Margin="0,102,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264" TextAlignment="Center" TextDecorations="Underline" Foreground="#FF0023FF">
+            <Hyperlink NavigateUri="https://github.com/Lyt99/SimPadConfigSwitcher" RequestNavigate="Hyperlink_RequestNavigate">github.com/Lyt99/SimPadConfigSwitcher</Hyperlink>
+        </TextBlock>
+
+    </Grid>
+</Window>
